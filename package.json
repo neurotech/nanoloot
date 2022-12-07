@@ -1,0 +1,18 @@
+{
+  "name": "nanoloot",
+  "version": "0.0.0",
+  "description": "A tiny window for tracking who looted what.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neurotech/nanoloot.git"
+  },
+  "scripts": {
+    "release:major": "npm version major && git push --follow-tags",
+    "release:minor": "npm version minor && git push --follow-tags",
+    "release:patch": "npm version patch && git push --follow-tags"
+  },
+  "author": "Tim Douglas",
+  "license": "MIT",
+  "homepage": "https://github.com/neurotech/nanoloot#readme",
+  "private": true
+}
