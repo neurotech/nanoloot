@@ -1,6 +1,6 @@
 ignore:
   - "*.yml"
   - "*.psd"
-  - "psd"
+  - "*.png"
   - "dev.sh"
   - "package.json"
