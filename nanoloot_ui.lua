@@ -22,19 +22,20 @@ local function CreateMainPanel()
         "NANOLOOT_PANEL_BASE",
         NanoLoot.Globals.NANOLOOT_PANEL_WIDTH,
         NanoLoot.Globals.NANOLOOT_PANEL_HEIGHT,
-        0,
-        0,
+        5,
+        -5,
         nil,
         nil,
         true,
-        "BOTTOM",
-        "BOTTOM"
+        "TOPLEFT",
+        "TOPLEFT"
     )
 
     return NanoLootPanel
 end
 
 local function CreateTitleBar(parent)
+    print(NanoLootDB.TitleBarBackground)
     local NanoLootTitleBar = Elements.Panel.CreatePanel(
         parent,
         "NANOLOOT_TITLE_BAR",
@@ -43,7 +44,7 @@ local function CreateTitleBar(parent)
         0,
         0,
         nil,
-        Elements.Palette.RGB.PURPLE,
+        NanoLootDB.TitleBarBackground,
         false,
         "TOP", "TOP"
     )

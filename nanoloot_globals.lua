@@ -1,7 +1,6 @@
 NanoLoot = {}
 
-local NANOLOOT_LOGO = "|cff8eaaffnano|r|cffd2ddffloot|r"
-local NANOLOOT_LOG_PREFIX = "|cff113299[|r" .. NANOLOOT_LOGO .. "|cff113299]|r"
+local NANOLOOT_LOGO = "|cff9560FFnano|r|cffd5bfffloot|r"
 local NANOLOOT_FONT_PATH = "Interface\\AddOns\\nanoloot\\Elements\\Fonts\\elements.ttf"
 local NANOLOOT_PADDING = 4
 local NANOLOOT_BAR_HEIGHT = 20
@@ -23,7 +22,6 @@ local NANOLOOT_MSG_BUTTON_HIGHLIGHT = { 47 / 255, 107 / 255, 76 / 255 }
 
 NanoLoot.Globals = {
     NANOLOOT_LOGO = NANOLOOT_LOGO,
-    NANOLOOT_LOG_PREFIX = NANOLOOT_LOG_PREFIX,
     NANOLOOT_FONT_PATH = NANOLOOT_FONT_PATH,
     NANOLOOT_PADDING = NANOLOOT_PADDING,
     NANOLOOT_BAR_HEIGHT = NANOLOOT_BAR_HEIGHT,

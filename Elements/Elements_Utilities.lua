@@ -54,8 +54,7 @@ Elements.Utilities.AddHighlightAndShadow = function(parent, invert, highlightCol
   end
 
   -- Highlight
-  local highlight =
-  CreateFrame("Frame", parent:GetName() .. "INNER_BORDER", parent, "BackdropTemplate")
+  local highlight = CreateFrame("Frame", parent:GetName() .. "INNER_BORDER", parent, "BackdropTemplate")
   Elements.Utilities.SetPixelScaling(highlight)
 
   highlight:SetPoint(highlightPoint, parent, 1, highlightOffsetY)

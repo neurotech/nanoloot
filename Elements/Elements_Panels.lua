@@ -9,7 +9,8 @@ Elements.Panel.CreatePanel = function(
   backgroundColour,
   movable,
   point,
-  relativePoint
+  relativePoint,
+  opacity
 )
   offsetX = offsetX or 0
   offsetY = offsetY or 0
@@ -20,6 +21,7 @@ Elements.Panel.CreatePanel = function(
   height = height or 150
   point = point or "TOPLEFT"
   relativePoint = relativePoint or "TOPLEFT"
+  opacity = opacity or 0.85
 
   if not name then name = Elements.Common.UUID() end
 
@@ -41,7 +43,7 @@ Elements.Panel.CreatePanel = function(
     backgroundColour[1],
     backgroundColour[2],
     backgroundColour[3],
-    0.85
+    opacity
   )
 
   panelBase:SetBackdropBorderColor(unpack(borderColour))

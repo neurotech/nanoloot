@@ -97,8 +97,8 @@ Elements.Text.RainbowText = function(text, palette)
     if paletteIndex > #palette then
       paletteIndex = 1
     end
-
-    rainbowText = rainbowText .. palette[paletteIndex] .. char .. Elements.Palette.RESET
+    print(char)
+    rainbowText = rainbowText .. "|cff" .. palette[paletteIndex] .. char .. "|r"
 
     paletteIndex = paletteIndex + 1
   end

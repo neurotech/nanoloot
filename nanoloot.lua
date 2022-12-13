@@ -60,13 +60,24 @@ loadingEvents:SetScript(
             if not NanoLootDB then
                 NanoLootDB = {}
                 NanoLootDB.LootList = {}
+                NanoLootDB.TitleBarBackground = Elements.Palette.RGB.PURPLE
+                NanoLootDB.UseClassColour = false
             else
                 if not NanoLootDB.LootList then
                     NanoLootDB.LootList = {}
                 end
+
+                if not NanoLootDB.TitleBarBackground then
+                    NanoLootDB.TitleBarBackground = Elements.Palette.RGB.PURPLE
+                end
+
+                if not NanoLootDB.UseClassColour then
+                    NanoLootDB.UseClassColour = false
+                end
             end
 
             InitialiseNanoLoot()
+            NanoLoot.Config.CreateConfigFrame()
 
             loadingEvents:UnregisterEvent("ADDON_LOADED")
         end
