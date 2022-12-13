@@ -240,8 +240,13 @@ local function RenderLoot()
 
     if #NanoLootDB.LootList == 0 then
         _G["NANOLOOT_WAITING_BAR"]:Show()
+
+        if NanoLootDB.HideWhenEmpty then
+            _G["NANOLOOT_PANEL_BASE"]:Hide()
+        end
     else
         _G["NANOLOOT_WAITING_BAR"]:Hide()
+        _G["NANOLOOT_PANEL_BASE"]:Show()
 
         for index, value in ipairs(NanoLootDB.LootList) do
             if _G["NANOLOOT_LOOT_BAR_" .. index] then

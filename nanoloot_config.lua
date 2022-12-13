@@ -66,17 +66,18 @@ local function CreateConfigFrame()
     -- Colour Options subheading
     local colourOptionsText = configFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
     colourOptionsText:SetPoint("TOPLEFT", 10, -40)
-    colourOptionsText:SetText("Title Bar Colour")
+    colourOptionsText:SetPoint("TOPLEFT", headerText, "BOTTOMLEFT", 0, -20)
+    colourOptionsText:SetText("Title bar colour")
 
     -- 'Use Class Colour' checkbox
     local classColourCheckbox = CreateFrame("CheckButton", "NANOLOOT_CLASS_COLOUR_CHECKBOX", configFrame,
         "SettingsCheckBoxTemplate")
     classColourCheckbox:SetPoint("TOPLEFT", colourOptionsText, "BOTTOMLEFT", 0, -10)
 
-    -- "Use Class Colour" text
+    -- 'Use class colour' text
     classColourCheckbox.text = classColourCheckbox:CreateFontString("NANOLOOT_CLASS_COLOUR_CHECKBOX_TEXT", "ARTWORK",
         "GameFontNormal")
-    classColourCheckbox.text:SetText("Use Class Colour")
+    classColourCheckbox.text:SetText("Use class colour")
     classColourCheckbox.text:SetPoint("LEFT", classColourCheckbox, "RIGHT", 4, 0)
     classColourCheckbox:SetChecked(NanoLootDB.UseClassColour)
     classColourCheckbox:SetScript("OnClick", function()
@@ -120,6 +121,36 @@ local function CreateConfigFrame()
 
     HandleClassColourClick()
 
+    -- Visibility subheading
+    local visibilityText = configFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
+    visibilityText:SetPoint("BOTTOMLEFT", colourSwatch, "BOTTOMLEFT", 0, -40)
+    visibilityText:SetText("Visibility")
+
+    -- 'Hide when empty' checkbox
+    local hideWhenEmptyCheckbox = CreateFrame("CheckButton", "NANOLOOT_HIDE_WHEN_EMPTY_CHECKBOX", configFrame,
+        "SettingsCheckBoxTemplate")
+    hideWhenEmptyCheckbox:SetPoint("TOPLEFT", visibilityText, "BOTTOMLEFT", 0, -10)
+
+    -- 'Hide when empty' text
+    hideWhenEmptyCheckbox.text = hideWhenEmptyCheckbox:CreateFontString(
+        "NANOLOOT_HIDE_WHEN_EMPTY_CHECKBOX_TEXT",
+        "ARTWORK",
+        "GameFontNormal"
+    )
+    hideWhenEmptyCheckbox.text:SetText("Hide when empty")
+    hideWhenEmptyCheckbox.text:SetPoint("LEFT", hideWhenEmptyCheckbox, "RIGHT", 4, 0)
+    hideWhenEmptyCheckbox:SetChecked(NanoLootDB.HideWhenEmpty)
+    hideWhenEmptyCheckbox:SetScript("OnClick", function()
+        NanoLootDB.HideWhenEmpty = not NanoLootDB.HideWhenEmpty
+        hideWhenEmptyCheckbox:SetChecked(NanoLootDB.HideWhenEmpty)
+        if NanoLootDB.HideWhenEmpty then
+            _G["NANOLOOT_PANEL_BASE"]:Hide()
+        else
+            _G["NANOLOOT_PANEL_BASE"]:Show()
+        end
+    end)
+
+    -- Register config frame
     local category = Settings.RegisterCanvasLayoutCategory(configFrame, categoryName)
     Settings.RegisterAddOnCategory(category)
 end

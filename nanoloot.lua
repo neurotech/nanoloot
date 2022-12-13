@@ -62,6 +62,7 @@ loadingEvents:SetScript(
                 NanoLootDB.LootList = {}
                 NanoLootDB.TitleBarBackground = Elements.Palette.RGB.PURPLE
                 NanoLootDB.UseClassColour = false
+                NanoLootDB.HideWhenEmpty = false
             else
                 if not NanoLootDB.LootList then
                     NanoLootDB.LootList = {}
@@ -73,6 +74,10 @@ loadingEvents:SetScript(
 
                 if not NanoLootDB.UseClassColour then
                     NanoLootDB.UseClassColour = false
+                end
+
+                if not NanoLootDB.HideWhenEmpty then
+                    NanoLootDB.HideWhenEmpty = false
                 end
             end
 
