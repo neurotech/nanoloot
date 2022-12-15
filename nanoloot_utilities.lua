@@ -1,3 +1,18 @@
+local function GetTruncatedLink(link)
+    local truncatedLink = ''
+    local maxLength = 20
+    local itemName = link:match("%[(.+)%]")
+
+    if string.len(itemName) > maxLength then
+        local truncatedName = string.sub(itemName, 1, maxLength) .. "..."
+        truncatedLink = link:gsub("%[(.+)%]", "[" .. truncatedName .. "]")
+
+        return truncatedLink
+    end
+
+    return link
+end
+
 local function LootInfo(...)
     local info        = { ... }
     local link        = info[1]:match("(|c.+|r)")
@@ -16,5 +31,6 @@ local function LootInfo(...)
 end
 
 NanoLoot.Utilities = {
-    LootInfo = LootInfo
+    GetTruncatedLink = GetTruncatedLink,
+    LootInfo = LootInfo,
 }

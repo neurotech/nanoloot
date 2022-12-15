@@ -2,6 +2,7 @@ local function NanoLootEventHandler(_, event, ...)
     if event == "CHAT_MSG_LOOT" then
         local currentPlayer = UnitName("player")
         local player, classPlayer, link, rarity, itemLevel, itemID, itemType, itemSubType = NanoLoot.Utilities.LootInfo(...)
+        local truncatedLink = NanoLoot.Utilities.GetTruncatedLink(link)
         local playerNoRealm = player:gsub("%-.+", "")
         local classPlayerNoRealm = classPlayer:gsub("%-.+", "")
         local isSelf = playerNoRealm == currentPlayer
@@ -19,7 +20,7 @@ local function NanoLootEventHandler(_, event, ...)
             local loot = {
                 classPlayer = classPlayer,
                 itemLevel = itemLevel,
-                link = link,
+                link = truncatedLink,
                 player = player,
                 playerNoRealm = playerNoRealm,
                 classPlayerNoRealm = classPlayerNoRealm,
