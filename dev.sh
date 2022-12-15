@@ -11,6 +11,7 @@ cp *.lua /h/games/World\ of\ Warcraft/_retail_/Interface/AddOns/nanoloot/
 cp *.ttf /h/games/World\ of\ Warcraft/_retail_/Interface/AddOns/nanoloot/
 cp *.mp3 /h/games/World\ of\ Warcraft/_retail_/Interface/AddOns/nanoloot/
 cp -r Elements /h/games/World\ of\ Warcraft/_retail_/Interface/AddOns/nanoloot/
+cp -r TbdWidgets /h/games/World\ of\ Warcraft/_retail_/Interface/AddOns/nanoloot/
 cp nanoloot.toc.tmp /h/games/World\ of\ Warcraft/_retail_/Interface/AddOns/nanoloot/nanoloot.toc
 
 echo "Cleaning up..."
