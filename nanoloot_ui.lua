@@ -230,18 +230,7 @@ local function CreateLootBar(parent, index, lootInfo)
     messageButton:SetPoint("TOPRIGHT", skipButton, "TOPLEFT", -3, 0)
     messageButton:SetScript("OnClick", function(_, motion)
         if not motion then return end
-
-        if lootInfo.isSelf then
-            local _, instanceType = IsInInstance()
-            if instanceType == "raid" then
-                SendChatMessage(GetMessageText(lootInfo, true), "RAID")
-            else
-                SendChatMessage(GetMessageText(lootInfo, true), "INSTANCE_CHAT")
-            end
-        else
-            SendChatMessage(GetMessageText(lootInfo), "WHISPER", nil, lootInfo.player)
-        end
-
+        NanoLoot.Utilities.SendLootChatMessage(lootInfo)
         PlaySoundFile([[Interface\Addons\nanoloot\send_message.mp3]])
     end)
 end
@@ -252,18 +241,7 @@ local function UpdateLootBar(index, lootInfo)
 
     _G["NANOLOOT_LOOT_BAR_MSG_" .. index]:SetScript("OnClick", function(_, motion)
         if not motion then return end
-
-        if lootInfo.isSelf then
-            local _, instanceType = IsInInstance()
-            if instanceType == "raid" then
-                SendChatMessage(GetMessageText(lootInfo, true), "RAID")
-            else
-                SendChatMessage(GetMessageText(lootInfo, true), "INSTANCE_CHAT")
-            end
-        else
-            SendChatMessage(GetMessageText(lootInfo), "WHISPER", nil, lootInfo.player)
-        end
-
+        NanoLoot.Utilities.SendLootChatMessage(lootInfo)
         PlaySoundFile([[Interface\Addons\nanoloot\send_message.mp3]])
     end)
 

@@ -21,6 +21,7 @@ local function NanoLootEventHandler(_, event, ...)
                 classPlayer = classPlayer,
                 itemLevel = itemLevel,
                 link = truncatedLink,
+                originalLink = link,
                 player = player,
                 playerNoRealm = playerNoRealm,
                 classPlayerNoRealm = classPlayerNoRealm,
