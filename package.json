@@ -1,6 +1,6 @@
 {
   "name": "nanoloot",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "A tiny window for tracking who looted what.",
   "repository": {
     "type": "git",
