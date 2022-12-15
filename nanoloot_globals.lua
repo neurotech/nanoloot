@@ -1,8 +1,13 @@
 NanoLoot = {}
 
+local LSM
+if LibStub then
+    LSM = LibStub("LibSharedMedia-3.0")
+end
+
 local NANOLOOT_LOGO = "|cff9560FFnano|r|cffd5bfffloot|r"
 local NANOLOOT_FONT_PATH = "Interface\\AddOns\\nanoloot\\Elements\\Fonts\\elements.ttf"
-local NANOLOOT_PADDING = 4
+local NANOLOOT_PADDING = 8
 local NANOLOOT_BAR_HEIGHT = 20
 local NANOLOOT_PANEL_HEIGHT = NANOLOOT_BAR_HEIGHT * 2
 local NANOLOOT_PANEL_WIDTH = 320
@@ -21,6 +26,7 @@ local NANOLOOT_MSG_BUTTON_LABEL_SHADOW = { 2 / 255, 58 / 255, 29 / 255 }
 local NANOLOOT_MSG_BUTTON_HIGHLIGHT = { 47 / 255, 107 / 255, 76 / 255 }
 
 NanoLoot.Globals = {
+    LSM = LSM,
     NANOLOOT_LOGO = NANOLOOT_LOGO,
     NANOLOOT_FONT_PATH = NANOLOOT_FONT_PATH,
     NANOLOOT_PADDING = NANOLOOT_PADDING,

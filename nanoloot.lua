@@ -63,6 +63,10 @@ loadingEvents:SetScript(
                 NanoLootDB.TitleBarBackground = Elements.Palette.RGB.PURPLE
                 NanoLootDB.UseClassColour = false
                 NanoLootDB.HideWhenEmpty = false
+                NanoLootDB.UseCustomFont = false
+                NanoLootDB.CustomFontName = nil
+                NanoLootDB.CustomFontPath = nil
+                NanoLootDB.FontSize = 12
             else
                 if not NanoLootDB.LootList then
                     NanoLootDB.LootList = {}
@@ -74,6 +78,22 @@ loadingEvents:SetScript(
 
                 if not NanoLootDB.UseClassColour then
                     NanoLootDB.UseClassColour = false
+                end
+
+                if not NanoLootDB.UseCustomFont then
+                    NanoLootDB.UseCustomFont = false
+                end
+
+                if not NanoLootDB.CustomFontName then
+                    NanoLootDB.CustomFontName = nil
+                end
+
+                if not NanoLootDB.CustomFontPath then
+                    NanoLootDB.CustomFontPath = nil
+                end
+
+                if not NanoLootDB.FontSize then
+                    NanoLootDB.FontSize = 12
                 end
 
                 if not NanoLootDB.HideWhenEmpty then

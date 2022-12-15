@@ -16,11 +16,15 @@ local function GetMessageText(lootInfo, isSelf)
     return messageText
 end
 
+local function GetPanelWidth()
+    return NanoLootDB.FontSize * 24
+end
+
 local function CreateMainPanel()
     local NanoLootPanel = Elements.Panel.CreatePanel(
         UIParent,
         "NANOLOOT_PANEL_BASE",
-        NanoLoot.Globals.NANOLOOT_PANEL_WIDTH,
+        GetPanelWidth(),
         NanoLoot.Globals.NANOLOOT_PANEL_HEIGHT,
         5,
         -5,
@@ -28,40 +32,49 @@ local function CreateMainPanel()
         nil,
         true,
         "TOPLEFT",
-        "TOPLEFT"
+        "TOPLEFT",
+        nil,
+        true
     )
 
     return NanoLootPanel
 end
 
 local function CreateTitleBar(parent)
-    print(NanoLootDB.TitleBarBackground)
+    local fontPath = NanoLoot.Globals.NANOLOOT_FONT_PATH
+    local barHeight = NanoLootDB.FontSize + 12
+
+    if NanoLootDB.CustomFontName and NanoLootDB.CustomFontPath then
+        fontPath = NanoLootDB.CustomFontPath
+    end
+
     local NanoLootTitleBar = Elements.Panel.CreatePanel(
         parent,
         "NANOLOOT_TITLE_BAR",
-        NanoLoot.Globals.NANOLOOT_PANEL_WIDTH,
-        NanoLoot.Globals.NANOLOOT_BAR_HEIGHT,
+        GetPanelWidth(),
+        barHeight,
         0,
         0,
         nil,
         NanoLootDB.TitleBarBackground,
         false,
-        "TOP", "TOP"
+        "TOP",
+        "TOP"
     )
     Elements.Utilities.AddHighlightAndShadow(NanoLootTitleBar)
 
     Elements.Text.CreateText(
-        NanoLoot.Globals.NANOLOOT_FONT_PATH,
+        fontPath,
         "NANOLOOT_TITLE_BAR_TEXT",
         NanoLootTitleBar,
         NanoLootTitleBar,
         "TOPLEFT",
-        25,
+        barHeight,
         "nanoloot",
-        8,
+        NanoLootDB.FontSize,
         NanoLoot.Globals.NANOLOOT_PADDING,
-        3,
-        "LEFT",
+        -(barHeight / 6),
+        "TOPLEFT",
         "NONE"
     )
 
@@ -69,48 +82,17 @@ local function CreateTitleBar(parent)
 end
 
 local function CreateWaitingBar(parent)
+    local fontPath = NanoLoot.Globals.NANOLOOT_FONT_PATH
+    local barHeight = NanoLootDB.FontSize + 12
+
+    if NanoLootDB.CustomFontName and NanoLootDB.CustomFontPath then
+        fontPath = NanoLootDB.CustomFontPath
+    end
+
     local NanoLootWaitingBar = Elements.Panel.CreatePanel(parent,
         "NANOLOOT_WAITING_BAR",
-        NanoLoot.Globals.NANOLOOT_PANEL_WIDTH,
-        NanoLoot.Globals.NANOLOOT_BAR_HEIGHT + 1,
-        0,
-        1,
-        nil,
-        Elements.Palette.RGB.DARK_GREY,
-        false,
-        "TOPLEFT",
-        "BOTTOMLEFT"
-    )
-
-    Elements.Text.CreateText(NanoLoot.Globals.NANOLOOT_FONT_PATH,
-        "NANOLOOT_WAITING_BAR_TEXT",
-        NanoLootWaitingBar,
-        NanoLootWaitingBar,
-        "TOPLEFT",
-        25,
-        "|cffa398acWaiting for loot...|r",
-        8,
-        NanoLoot.Globals.NANOLOOT_PADDING,
-        2,
-        "LEFT",
-        "NONE",
-        { 21 / 255, 19 / 255, 23 / 255 },
-        1
-    )
-end
-
-local function SetMainPanelSize()
-    if #NanoLootDB.LootList > 0 then
-        _G["NANOLOOT_PANEL_BASE"]:SetSize(NanoLoot.Globals.NANOLOOT_PANEL_WIDTH,
-            NanoLoot.Globals.NANOLOOT_BAR_HEIGHT + (NanoLoot.Globals.NANOLOOT_BAR_HEIGHT * #NanoLootDB.LootList))
-    end
-end
-
-local function CreateLootBar(parent, index, lootInfo)
-    local lootBar = Elements.Panel.CreatePanel(parent,
-        "NANOLOOT_LOOT_BAR_" .. index,
-        NanoLoot.Globals.NANOLOOT_PANEL_WIDTH,
-        NanoLoot.Globals.NANOLOOT_BAR_HEIGHT + 1,
+        GetPanelWidth(),
+        barHeight + 1,
         0,
         1,
         nil,
@@ -118,20 +100,73 @@ local function CreateLootBar(parent, index, lootInfo)
         false,
         "TOPLEFT",
         "BOTTOMLEFT",
-        true
+        1
     )
 
-    local lootBarTextFrame, _ = Elements.Text.CreateText(NanoLoot.Globals.NANOLOOT_FONT_PATH,
+    Elements.Text.CreateText(
+        fontPath,
+        "NANOLOOT_WAITING_BAR_TEXT",
+        NanoLootWaitingBar,
+        NanoLootWaitingBar,
+        "TOPLEFT",
+        barHeight,
+        "|cffa398acWaiting for loot...|r",
+        NanoLootDB.FontSize,
+        NanoLoot.Globals.NANOLOOT_PADDING,
+        -(barHeight / 6),
+        "TOPLEFT",
+        "NONE",
+        { 21 / 255, 19 / 255, 23 / 255 },
+        1
+    )
+end
+
+local function SetMainPanelSize()
+    local barHeight = NanoLootDB.FontSize + 12
+
+    if #NanoLootDB.LootList > 0 then
+        _G["NANOLOOT_PANEL_BASE"]:SetSize(
+            GetPanelWidth(),
+            barHeight + (barHeight * #NanoLootDB.LootList)
+        )
+    end
+end
+
+local function CreateLootBar(parent, index, lootInfo)
+    local fontPath = NanoLoot.Globals.NANOLOOT_FONT_PATH
+    local barHeight = NanoLootDB.FontSize + 12
+
+    if NanoLootDB.CustomFontName and NanoLootDB.CustomFontPath then
+        fontPath = NanoLootDB.CustomFontPath
+    end
+
+    local lootBar = Elements.Panel.CreatePanel(
+        parent,
+        "NANOLOOT_LOOT_BAR_" .. index,
+        GetPanelWidth(),
+        barHeight + 1,
+        0,
+        1,
+        nil,
+        nil,
+        false,
+        "TOPLEFT",
+        "BOTTOMLEFT",
+        1
+    )
+
+    local lootBarTextFrame, _ = Elements.Text.CreateText(
+        fontPath,
         "NANOLOOT_LOOT_BAR_TEXT_" .. index,
         lootBar,
         lootBar,
         "TOPLEFT",
-        25,
+        barHeight,
         GetLootText(lootInfo),
-        8,
+        NanoLootDB.FontSize,
         NanoLoot.Globals.NANOLOOT_PADDING,
-        2,
-        "LEFT",
+        -(barHeight / 4.5),
+        "TOPLEFT",
         "NONE",
         { 21 / 255, 19 / 255, 23 / 255 },
         1
@@ -160,7 +195,7 @@ local function CreateLootBar(parent, index, lootInfo)
         NanoLoot.Globals.Buttons.NANOLOOT_SKIP_BUTTON_BORDER,
         NanoLoot.Globals.Buttons.NANOLOOT_SKIP_BUTTON_BG,
         "RIGHT",
-        -3,
+        -(NanoLoot.Globals.NANOLOOT_PADDING / 2),
         0,
         8,
         NanoLoot.Globals.Buttons.NANOLOOT_SKIP_BUTTON_LABEL_SHADOW,
@@ -192,6 +227,7 @@ local function CreateLootBar(parent, index, lootInfo)
         NanoLoot.Globals.Buttons.NANOLOOT_MSG_BUTTON_LABEL_SHADOW,
         NanoLoot.Globals.Buttons.NANOLOOT_MSG_BUTTON_HIGHLIGHT
     )
+    messageButton:SetPoint("TOPRIGHT", skipButton, "TOPLEFT", -3, 0)
     messageButton:SetScript("OnClick", function(_, motion)
         if not motion then return end
 
@@ -207,7 +243,6 @@ end
 
 local function UpdateLootBar(index, lootInfo)
     _G["NANOLOOT_LOOT_BAR_" .. index]:Hide()
-
     _G["NANOLOOT_LOOT_BAR_TEXT_" .. index]:SetText(GetLootText(lootInfo))
 
     _G["NANOLOOT_LOOT_BAR_MSG_" .. index]:SetScript("OnClick", function(_, motion)
@@ -218,15 +253,68 @@ local function UpdateLootBar(index, lootInfo)
         else
             SendChatMessage(GetMessageText(lootInfo), "WHISPER", nil, lootInfo.player)
         end
+
+        PlaySoundFile([[Interface\Addons\nanoloot\send_message.mp3]])
     end)
 
     _G["NANOLOOT_LOOT_BAR_CLEAR_" .. index]:SetScript("OnClick", function(_, motion)
         if not motion then return end
         table.remove(NanoLootDB.LootList, index)
+        PlaySoundFile([[Interface\Addons\nanoloot\skip.mp3]])
         NanoLoot.UI.RenderLoot()
     end)
 
     _G["NANOLOOT_LOOT_BAR_" .. index]:Show()
+end
+
+local function UpdateFontStrings(fontPath)
+    fontPath = fontPath or NanoLootDB.CustomFontPath or NanoLoot.Globals.NANOLOOT_FONT_PATH
+
+    local barHeight = NanoLootDB.FontSize + 12
+    local barWidth = GetPanelWidth()
+
+    -- Main panel
+    _G["NANOLOOT_PANEL_BASE"]:SetWidth(barWidth)
+
+    -- Title bar
+    _G["NANOLOOT_TITLE_BAR"]:SetSize(barWidth, barHeight)
+    _G["NANOLOOT_TITLE_BAR_INNER_BORDER"]:SetSize((barWidth - 2), 1)
+    _G["NANOLOOT_TITLE_BAR_SHADOW_BORDER"]:SetSize((barWidth - 2), 1)
+    _G["NANOLOOT_TITLE_BAR_TEXT"]:SetFont(fontPath, NanoLootDB.FontSize)
+
+    -- Waiting bar
+    _G["NANOLOOT_WAITING_BAR"]:SetSize(barWidth, barHeight)
+    _G["NANOLOOT_WAITING_BAR_TEXT"]:SetFont(fontPath, NanoLootDB.FontSize)
+
+    -- Loot list
+    if #NanoLootDB.LootList > 0 then
+        for index, _ in ipairs(NanoLootDB.LootList) do
+            _G["NANOLOOT_LOOT_BAR_" .. index]:SetSize(barWidth, barHeight)
+            _G["NANOLOOT_LOOT_BAR_TEXT_" .. index]:SetFont(fontPath, NanoLootDB.FontSize)
+
+            -- -- Buttons
+            local buttonFontSize = NanoLootDB.FontSize * 0.85
+            if NanoLootDB.FontSize < 18 then
+                buttonFontSize = NanoLootDB.FontSize
+            end
+
+            local additional = (NanoLootDB.FontSize / 3)
+            local clearButtonWidth = 15 + additional
+            local clearButtonHeight = 14 + additional
+            local messageButtonWidth = 15 + additional
+            local messageButtonHeight = 14 + additional
+
+            _G["NANOLOOT_LOOT_BAR_CLEAR_" .. index]:SetSize(clearButtonWidth, clearButtonHeight)
+            _G["NANOLOOT_LOOT_BAR_CLEAR_" .. index .. "_TEXT"]:SetFont(fontPath, buttonFontSize)
+            _G["NANOLOOT_LOOT_BAR_CLEAR_" .. index .. "_INNER_BORDER"]:SetSize((clearButtonWidth - 2), 1)
+            _G["NANOLOOT_LOOT_BAR_CLEAR_" .. index .. "_SHADOW_BORDER"]:SetSize((clearButtonWidth - 2), 1)
+
+            _G["NANOLOOT_LOOT_BAR_MSG_" .. index]:SetSize(messageButtonWidth, messageButtonHeight)
+            _G["NANOLOOT_LOOT_BAR_MSG_" .. index .. "_TEXT"]:SetFont(fontPath, buttonFontSize)
+            _G["NANOLOOT_LOOT_BAR_MSG_" .. index .. "_INNER_BORDER"]:SetSize((messageButtonWidth - 2), 1)
+            _G["NANOLOOT_LOOT_BAR_MSG_" .. index .. "_SHADOW_BORDER"]:SetSize((messageButtonWidth - 2), 1)
+        end
+    end
 end
 
 local function RenderLoot()
@@ -262,6 +350,7 @@ local function RenderLoot()
     end
 
     SetMainPanelSize()
+    UpdateFontStrings()
 end
 
 NanoLoot.UI = {
@@ -269,5 +358,6 @@ NanoLoot.UI = {
     CreateTitleBar = CreateTitleBar,
     CreateWaitingBar = CreateWaitingBar,
     SetMainPanelSize = SetMainPanelSize,
-    RenderLoot = RenderLoot
+    RenderLoot = RenderLoot,
+    UpdateFontStrings = UpdateFontStrings
 }

@@ -12,7 +12,6 @@ local function colorCallback(restore)
     NanoLootDB.TitleBarBackground = { newR, newG, newB }
 
     -- And update any UI elements that use this color...
-    _G["NANOLOOT_TITLEBAR_BG_COLOUR_SWATCH"]:SetBackdropColor(unpack({ newR, newG, newB }))
     _G["NANOLOOT_TITLE_BAR"]:SetBackdropColor(unpack({ newR, newG, newB }))
 end
 
@@ -30,20 +29,13 @@ local function GetCurrentClassColour()
 end
 
 local function HandleClassColourClick()
-    local colourSwatch = _G["NANOLOOT_TITLEBAR_BG_COLOUR_SWATCH"]
     local colourPickerButton = _G["NANOLOOT_TITLEBAR_BG_COLOR_PICKER"]
 
     if NanoLootDB.UseClassColour then
         local currentClassColour = GetCurrentClassColour()
-        colourSwatch:SetBackdropColor(currentClassColour.r, currentClassColour.g, currentClassColour.b)
         colourPickerButton:Disable()
         NanoLootDB.TitleBarBackground = { currentClassColour.r, currentClassColour.g, currentClassColour.b }
     else
-        colourSwatch:SetBackdropColor(
-            NanoLootDB.TitleBarBackground[1],
-            NanoLootDB.TitleBarBackground[2],
-            NanoLootDB.TitleBarBackground[3]
-        )
         colourPickerButton:Enable()
     end
 
@@ -63,16 +55,16 @@ local function CreateConfigFrame()
     headerText:SetPoint("TOPLEFT", 10, -10)
     headerText:SetText(NanoLoot.Globals.NANOLOOT_LOGO)
 
-    -- Colour Options subheading
-    local colourOptionsText = configFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
-    colourOptionsText:SetPoint("TOPLEFT", 10, -40)
-    colourOptionsText:SetPoint("TOPLEFT", headerText, "BOTTOMLEFT", 0, -20)
-    colourOptionsText:SetText("Title bar colour")
+    -- Appearance subheading
+    local appearanceText = configFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
+    appearanceText:SetPoint("TOPLEFT", 10, -40)
+    appearanceText:SetPoint("TOPLEFT", headerText, "BOTTOMLEFT", 0, -20)
+    appearanceText:SetText("Appearance")
 
-    -- 'Use Class Colour' checkbox
+    -- 'Use class colour' checkbox
     local classColourCheckbox = CreateFrame("CheckButton", "NANOLOOT_CLASS_COLOUR_CHECKBOX", configFrame,
         "SettingsCheckBoxTemplate")
-    classColourCheckbox:SetPoint("TOPLEFT", colourOptionsText, "BOTTOMLEFT", 0, -10)
+    classColourCheckbox:SetPoint("TOPLEFT", appearanceText, "BOTTOMLEFT", 0, -10)
 
     -- 'Use class colour' text
     classColourCheckbox.text = classColourCheckbox:CreateFontString("NANOLOOT_CLASS_COLOUR_CHECKBOX_TEXT", "ARTWORK",
@@ -84,31 +76,20 @@ local function CreateConfigFrame()
         NanoLootDB.UseClassColour = not NanoLootDB.UseClassColour
         classColourCheckbox:SetChecked(NanoLootDB.UseClassColour)
         HandleClassColourClick()
-    end)
 
-    -- Colour swatch
-    local colourSwatch = Elements.Panel.CreatePanel(
-        configFrame,
-        "NANOLOOT_TITLEBAR_BG_COLOUR_SWATCH",
-        20,
-        20,
-        10,
-        -(headerText:GetHeight() + 20),
-        nil,
-        NanoLootDB.TitleBarBackground,
-        false,
-        nil,
-        nil,
-        1
-    )
-    colourSwatch:SetPoint("TOPLEFT", classColourCheckbox, "BOTTOMLEFT", 2, -10)
+        if NanoLootDB.UseClassColour then
+            _G["NANOLOOT_TITLEBAR_BG_COLOR_PICKER"]:Hide()
+        else
+            _G["NANOLOOT_TITLEBAR_BG_COLOR_PICKER"]:Show()
+        end
+    end)
 
     -- Custom colour picker button
     local colourPickerButton = CreateFrame("Button", "NANOLOOT_TITLEBAR_BG_COLOR_PICKER", configFrame,
         "UIPanelButtonTemplate")
     colourPickerButton:SetText("Custom")
     colourPickerButton:SetWidth(120)
-    colourPickerButton:SetPoint("BOTTOMLEFT", classColourCheckbox, "BOTTOMLEFT", colourSwatch:GetWidth() + 10, -30)
+    colourPickerButton:SetPoint("LEFT", classColourCheckbox.text, "TOPRIGHT", 10, -10)
 
     colourPickerButton:SetScript("OnClick", function()
         ShowColorPicker(
@@ -119,11 +100,100 @@ local function CreateConfigFrame()
         )
     end)
 
+    if NanoLootDB.UseClassColour then
+        _G["NANOLOOT_TITLEBAR_BG_COLOR_PICKER"]:Hide()
+    else
+        _G["NANOLOOT_TITLEBAR_BG_COLOR_PICKER"]:Show()
+    end
+
     HandleClassColourClick()
+
+    -- 'Custom font' checkbox
+    local customFontCheckbox = CreateFrame("CheckButton", "NANOLOOT_CUSTOM_FONT_CHECKBOX", configFrame,
+        "SettingsCheckBoxTemplate")
+    customFontCheckbox:SetPoint("TOPLEFT", classColourCheckbox, "BOTTOMLEFT", 0, -10)
+
+    -- 'Custom font' subheading
+    local lsmFontNames = NanoLoot.Globals.LSM:List("font")
+    local lsmFontPaths = NanoLoot.Globals.LSM:HashTable("font")
+    customFontCheckbox.text = customFontCheckbox:CreateFontString("NANOLOOT_CUSTOM_FONT_CHECKBOX_TEXT", "ARTWORK",
+        "GameFontNormal")
+    customFontCheckbox.text:SetText("Use custom font")
+    customFontCheckbox.text:SetPoint("LEFT", customFontCheckbox, "RIGHT", 4, 0)
+    customFontCheckbox:SetChecked(NanoLootDB.UseCustomFont)
+    customFontCheckbox:SetScript("OnClick", function()
+        NanoLootDB.UseCustomFont = not NanoLootDB.UseCustomFont
+        customFontCheckbox:SetChecked(NanoLootDB.UseCustomFont)
+
+        if NanoLootDB.UseCustomFont then
+            _G["NANOLOOT_CUSTOM_FONT_DROPDOWN"]:Show()
+            NanoLootDB.CustomFontName = lsmFontNames[1]
+            NanoLootDB.CustomFontPath = lsmFontPaths[lsmFontNames[1]]
+            NanoLoot.UI.UpdateFontStrings()
+        else
+            _G["NANOLOOT_CUSTOM_FONT_DROPDOWN"]:Hide()
+            NanoLootDB.CustomFontName = nil
+            NanoLootDB.CustomFontPath = nil
+            NanoLoot.UI.UpdateFontStrings(NanoLoot.Globals.NANOLOOT_FONT_PATH)
+        end
+    end)
+
+    -- Custom font dropdown
+    local customFontDropdown = CreateFrame("Button", "NANOLOOT_CUSTOM_FONT_DROPDOWN", configFrame,
+        "NanoLootWidgetsDropDownTemplate");
+    customFontDropdown:SetPoint("LEFT", customFontCheckbox.text, "TOPRIGHT", 10, -10)
+    customFontDropdown:SetText(NanoLootDB.CustomFontName)
+    customFontDropdown:SetNormalAtlas('friendslist-categorybutton')
+    customFontDropdown:SetHighlightAtlas('friendslist-categorybutton')
+    customFontDropdown:SetSize(293, 23)
+
+    local options = {}
+    for _, value in pairs(lsmFontNames) do
+        table.insert(options, {
+            text = value,
+            func = function()
+                NanoLootDB.CustomFontName = value
+                NanoLootDB.CustomFontPath = lsmFontPaths[value]
+                NanoLoot.UI.UpdateFontStrings()
+            end
+        })
+    end
+    customFontDropdown:SetMenu(options)
+
+    if NanoLootDB.UseCustomFont then
+        customFontDropdown:Show()
+
+        if not NanoLootDB.CustomFontName then
+            NanoLootDB.CustomFontName = lsmFontNames[1]
+            NanoLootDB.CustomFontPath = lsmFontPaths[lsmFontNames[1]]
+            NanoLoot.UI.UpdateFontStrings()
+        end
+    else
+        customFontDropdown:Hide()
+    end
+
+    -- Font size slider
+    local function OnValueChanged(_, value)
+        NanoLootDB.FontSize = value
+        NanoLoot.UI.UpdateFontStrings()
+    end
+
+    local formatters = {}
+    local top = MinimalSliderWithSteppersMixin.Label.Top
+    local right = MinimalSliderWithSteppersMixin.Label.Right
+    formatters[right] = CreateMinimalSliderFormatter(right, function(value) return value end)
+    formatters[top] = CreateMinimalSliderFormatter(top, function(_) return 'Font size' end)
+
+    local fontSizeSlider = CreateFrame("Slider", "NANOLOOT_FONT_SIZE_SLIDER", configFrame,
+        "MinimalSliderWithSteppersTemplate")
+    fontSizeSlider:SetPoint("BOTTOMLEFT", customFontCheckbox, "BOTTOMLEFT", 0, -60)
+    fontSizeSlider:Init(NanoLootDB.FontSize or 8, 12, 24, 12, formatters)
+    fontSizeSlider:RegisterCallback(MinimalSliderWithSteppersMixin.Event.OnValueChanged, OnValueChanged)
+    fontSizeSlider:SetObeyStepOnDrag(false)
 
     -- Visibility subheading
     local visibilityText = configFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
-    visibilityText:SetPoint("BOTTOMLEFT", colourSwatch, "BOTTOMLEFT", 0, -40)
+    visibilityText:SetPoint("BOTTOMLEFT", fontSizeSlider, "BOTTOMLEFT", 0, -30)
     visibilityText:SetText("Visibility")
 
     -- 'Hide when empty' checkbox
