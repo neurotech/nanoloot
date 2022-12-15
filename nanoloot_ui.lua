@@ -232,7 +232,12 @@ local function CreateLootBar(parent, index, lootInfo)
         if not motion then return end
 
         if lootInfo.isSelf then
-            SendChatMessage(GetMessageText(lootInfo, true), "INSTANCE_CHAT")
+            local _, instanceType = IsInInstance()
+            if instanceType == "raid" then
+                SendChatMessage(GetMessageText(lootInfo, true), "RAID")
+            else
+                SendChatMessage(GetMessageText(lootInfo, true), "INSTANCE_CHAT")
+            end
         else
             SendChatMessage(GetMessageText(lootInfo), "WHISPER", nil, lootInfo.player)
         end
@@ -249,7 +254,12 @@ local function UpdateLootBar(index, lootInfo)
         if not motion then return end
 
         if lootInfo.isSelf then
-            SendChatMessage(GetMessageText(lootInfo, true), "INSTANCE_CHAT")
+            local _, instanceType = IsInInstance()
+            if instanceType == "raid" then
+                SendChatMessage(GetMessageText(lootInfo, true), "RAID")
+            else
+                SendChatMessage(GetMessageText(lootInfo, true), "INSTANCE_CHAT")
+            end
         else
             SendChatMessage(GetMessageText(lootInfo), "WHISPER", nil, lootInfo.player)
         end
