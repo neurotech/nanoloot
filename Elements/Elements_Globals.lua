@@ -85,10 +85,12 @@ Elements.Common.UUID = function()
   end)
 end
 
-Elements.Common.CreateFrameBlock = function(parent)
+Elements.Common.CreateFrameBlock = function(parent, name)
+  name = name or ("ELEMENTS_FRAMEBLOCK_" .. Elements.Common.UUID())
+
   local frameBlock = CreateFrame(
     "Frame",
-    "ELEMENTS_FRAMEBLOCK_" .. Elements.Common.UUID(),
+    name,
     parent,
     "BackdropTemplate"
   )

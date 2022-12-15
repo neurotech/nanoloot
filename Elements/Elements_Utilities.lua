@@ -26,7 +26,7 @@ Elements.Utilities.AddShadow = function(parent, shadowPoint, shadowOffsetY)
   shadowOffsetY = shadowOffsetY or 1
 
   local shadow =
-  CreateFrame("Frame", parent:GetName() .. "SHADOW_BORDER", parent, "BackdropTemplate")
+  CreateFrame("Frame", parent:GetName() .. "_SHADOW_BORDER", parent, "BackdropTemplate")
   Elements.Utilities.SetPixelScaling(shadow)
 
   shadow:SetPoint(shadowPoint, parent, 1, shadowOffsetY)
@@ -54,7 +54,7 @@ Elements.Utilities.AddHighlightAndShadow = function(parent, invert, highlightCol
   end
 
   -- Highlight
-  local highlight = CreateFrame("Frame", parent:GetName() .. "INNER_BORDER", parent, "BackdropTemplate")
+  local highlight = CreateFrame("Frame", parent:GetName() .. "_INNER_BORDER", parent, "BackdropTemplate")
   Elements.Utilities.SetPixelScaling(highlight)
 
   highlight:SetPoint(highlightPoint, parent, 1, highlightOffsetY)

@@ -10,7 +10,8 @@ Elements.Panel.CreatePanel = function(
   movable,
   point,
   relativePoint,
-  opacity
+  opacity,
+  invisible
 )
   offsetX = offsetX or 0
   offsetY = offsetY or 0
@@ -22,31 +23,40 @@ Elements.Panel.CreatePanel = function(
   point = point or "TOPLEFT"
   relativePoint = relativePoint or "TOPLEFT"
   opacity = opacity or 0.85
+  invisible = invisible or false
 
   if not name then name = Elements.Common.UUID() end
 
-  local panelBase = CreateFrame("Frame", name, parent, "BackdropTemplate")
+  local template = "BackdropTemplate"
+  if invisible then
+    template = nil
+  end
+
+  local panelBase = CreateFrame("Frame", name, parent, template)
 
   --panelBase:SetPoint(point, offsetX, offsetY)
   panelBase:SetPoint(point, parent, relativePoint, offsetX, offsetY)
 
   panelBase:SetSize(width, height)
-  panelBase:SetBackdrop(
-    {
-      bgFile = Elements.Textures.PANEL_BG_TEXTURE,
-      edgeFile = Elements.Textures.EDGE_TEXTURE,
-      edgeSize = 1,
-      insets = { left = 1, right = 1, top = 1, bottom = 1 }
-    }
-  )
-  panelBase:SetBackdropColor(
-    backgroundColour[1],
-    backgroundColour[2],
-    backgroundColour[3],
-    opacity
-  )
 
-  panelBase:SetBackdropBorderColor(unpack(borderColour))
+  if not invisible then
+    panelBase:SetBackdrop(
+      {
+        bgFile = Elements.Textures.PANEL_BG_TEXTURE,
+        edgeFile = Elements.Textures.EDGE_TEXTURE,
+        edgeSize = 1,
+        insets = { left = 1, right = 1, top = 1, bottom = 1 }
+      }
+    )
+    panelBase:SetBackdropColor(
+      backgroundColour[1],
+      backgroundColour[2],
+      backgroundColour[3],
+      opacity
+    )
+
+    panelBase:SetBackdropBorderColor(unpack(borderColour))
+  end
 
   panelBase:SetClampedToScreen(true)
 

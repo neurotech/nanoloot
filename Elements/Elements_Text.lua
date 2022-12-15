@@ -7,7 +7,7 @@ Elements.Text.CreateFreeText = function(fontPath, name, parent, text, size, flag
 
   local textElement = parent:CreateFontString(name, "ARTWORK")
 
-  textElement:SetIgnoreParentScale(true)
+  --textElement:SetIgnoreParentScale(false)
   textElement:SetFont(fontPath, size, flags)
   textElement:SetTextColor(textColor[1], textColor[2], textColor[3])
   textElement:SetShadowColor(shadowColor[1], shadowColor[2], shadowColor[3], shadowOpacity)
@@ -42,7 +42,7 @@ Elements.Text.CreateText = function(
   shadowColor = shadowColor or Elements.Palette.RGB.BLACK
   shadowOpacity = shadowOpacity or 0.85
 
-  local textFrame = Elements.Common.CreateFrameBlock(frame)
+  local textFrame = Elements.Common.CreateFrameBlock(frame, name .. "_FRAMEBLOCK")
   textFrame:SetPoint("TOPLEFT", anchorPoint, relativePoint, 0, offsetY)
 
   local textElement = Elements.Text.CreateFreeText(fontPath, name, textFrame, text, size, flags, shadowColor,
@@ -51,7 +51,7 @@ Elements.Text.CreateText = function(
   if not textFrameHeight and textElement:GetStringHeight() > 0 then
     textFrameHeight = textElement:GetStringHeight()
   else
-    textFrameHeight = textFrameHeight or size + (Elements.Units.Padding * 2)
+    textFrameHeight = textFrameHeight or size + 17
   end
 
   textFrame:SetSize(frame:GetWidth(), textFrameHeight)
