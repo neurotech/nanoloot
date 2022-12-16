@@ -78,6 +78,32 @@ local function CreateTitleBar(parent)
         "NONE"
     )
 
+    local clearAllButton = Elements.Buttons.CreateButton(
+        NanoLootTitleBar,
+        "NANOLOOT_LOOT_BAR_CLEAR_ALL",
+        "Clear",
+        45,
+        18,
+        NanoLoot.Globals.NANOLOOT_FONT_PATH,
+        NanoLoot.Globals.Buttons.NANOLOOT_SKIP_BUTTON_LABEL,
+        0,
+        0,
+        NanoLoot.Globals.Buttons.NANOLOOT_SKIP_BUTTON_BORDER,
+        NanoLoot.Globals.Buttons.NANOLOOT_SKIP_BUTTON_BG,
+        "RIGHT",
+        -4,
+        0,
+        NanoLootDB.FontSize,
+        NanoLoot.Globals.Buttons.NANOLOOT_SKIP_BUTTON_LABEL_SHADOW,
+        NanoLoot.Globals.Buttons.NANOLOOT_SKIP_BUTTON_HIGHLIGHT
+    )
+    clearAllButton:SetScript("OnClick", function(_, motion)
+        if not motion then return end
+        NanoLootDB.LootList = {}
+        PlaySoundFile([[Interface\Addons\nanoloot\skip.mp3]])
+        NanoLoot.UI.RenderLoot()
+    end)
+
     return NanoLootTitleBar
 end
 
@@ -269,6 +295,22 @@ local function UpdateFontStrings(fontPath)
     _G["NANOLOOT_TITLE_BAR_INNER_BORDER"]:SetSize((barWidth - 2), 1)
     _G["NANOLOOT_TITLE_BAR_SHADOW_BORDER"]:SetSize((barWidth - 2), 1)
     _G["NANOLOOT_TITLE_BAR_TEXT"]:SetFont(fontPath, NanoLootDB.FontSize)
+
+    local buttonFontSize = NanoLootDB.FontSize * 0.85
+    local additional = (NanoLootDB.FontSize * 0.5)
+
+    if NanoLootDB.FontSize < 19 then
+        buttonFontSize = NanoLootDB.FontSize
+        additional = (NanoLootDB.FontSize * 0.35)
+    end
+
+    local clearAllButtonWidth = 45 + additional
+    local clearAllButtonHeight = 14 + additional
+
+    _G["NANOLOOT_LOOT_BAR_CLEAR_ALL"]:SetSize(clearAllButtonWidth, clearAllButtonHeight)
+    _G["NANOLOOT_LOOT_BAR_CLEAR_ALL" .. "_TEXT"]:SetFont(fontPath, buttonFontSize)
+    _G["NANOLOOT_LOOT_BAR_CLEAR_ALL" .. "_INNER_BORDER"]:SetSize((clearAllButtonWidth - 2), 1)
+    _G["NANOLOOT_LOOT_BAR_CLEAR_ALL" .. "_SHADOW_BORDER"]:SetSize((clearAllButtonWidth - 2), 1)
 
     -- Waiting bar
     _G["NANOLOOT_WAITING_BAR"]:SetSize(barWidth, barHeight)
