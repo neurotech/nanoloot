@@ -55,6 +55,11 @@ function NanoLootWidgetsDropDownListviewItemTemplateMixin:SetDataBinding(binding
     self:SetHeight(height)
     self.text:SetText(binding.text)
 
+    if binding.fontPath then
+        local _, fontHeight, fontFlags = self.text:GetFont()
+        self.text:SetFont(binding.fontPath, fontHeight, fontFlags)
+    end
+
     self.icon:SetSize(height - 2, height - 2)
 
     if type(binding.icon) == "string" then

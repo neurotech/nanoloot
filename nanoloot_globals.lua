@@ -1,5 +1,6 @@
 NanoLoot = {}
 
+local LibStub = _G.LibStub
 local LSM
 if LibStub then
     LSM = LibStub("LibSharedMedia-3.0")

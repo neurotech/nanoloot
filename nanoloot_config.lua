@@ -127,50 +127,56 @@ local function CreateConfigFrame()
 
         if NanoLootDB.UseCustomFont then
             _G["NANOLOOT_CUSTOM_FONT_DROPDOWN"]:Show()
+            _G["NANOLOOT_CUSTOM_FONT_DROPDOWN"]:SetText(lsmFontNames[1])
             NanoLootDB.CustomFontName = lsmFontNames[1]
             NanoLootDB.CustomFontPath = lsmFontPaths[lsmFontNames[1]]
             NanoLoot.UI.UpdateFontStrings()
         else
             _G["NANOLOOT_CUSTOM_FONT_DROPDOWN"]:Hide()
+            _G["NANOLOOT_CUSTOM_FONT_DROPDOWN"]:SetText("")
             NanoLootDB.CustomFontName = nil
             NanoLootDB.CustomFontPath = nil
             NanoLoot.UI.UpdateFontStrings(NanoLoot.Globals.NANOLOOT_FONT_PATH)
         end
     end)
 
-    -- Custom font dropdown
-    local customFontDropdown = CreateFrame("Button", "NANOLOOT_CUSTOM_FONT_DROPDOWN", configFrame,
-        "NanoLootWidgetsDropDownTemplate");
-    customFontDropdown:SetPoint("LEFT", customFontCheckbox.text, "TOPRIGHT", 10, -10)
-    customFontDropdown:SetText(NanoLootDB.CustomFontName)
-    customFontDropdown:SetNormalAtlas('friendslist-categorybutton')
-    customFontDropdown:SetHighlightAtlas('friendslist-categorybutton')
-    customFontDropdown:SetSize(293, 23)
+    configFrame:SetScript("OnShow", function()
+        -- Create 'Custom font' dropdown on show so we can get the full list of LibSharedMedia fonts
+        local customFontDropdown = CreateFrame("Button", "NANOLOOT_CUSTOM_FONT_DROPDOWN", configFrame,
+            "NanoLootWidgetsDropDownTemplate");
+        customFontDropdown:SetPoint("LEFT", customFontCheckbox.text, "TOPRIGHT", 10, -10)
+        customFontDropdown:SetText(NanoLootDB.CustomFontName or lsmFontNames[1])
+        customFontDropdown:SetNormalAtlas('friendslist-categorybutton')
+        customFontDropdown:SetHighlightAtlas('friendslist-categorybutton')
+        customFontDropdown:SetSize(293, 23)
 
-    local options = {}
-    for _, value in pairs(lsmFontNames) do
-        table.insert(options, {
-            text = value,
-            func = function()
-                NanoLootDB.CustomFontName = value
-                NanoLootDB.CustomFontPath = lsmFontPaths[value]
+        local options = {}
+        for _, value in pairs(lsmFontNames) do
+            table.insert(options, {
+                text = value,
+                func = function()
+                    NanoLootDB.CustomFontName = value
+                    NanoLootDB.CustomFontPath = lsmFontPaths[value]
+                    _G["NANOLOOT_CUSTOM_FONT_DROPDOWN"]:SetText(value)
+                    NanoLoot.UI.UpdateFontStrings()
+                end,
+                fontPath = lsmFontPaths[value]
+            })
+        end
+        customFontDropdown:SetMenu(options)
+
+        if NanoLootDB.UseCustomFont then
+            customFontDropdown:Show()
+
+            if not NanoLootDB.CustomFontName then
+                NanoLootDB.CustomFontName = lsmFontNames[1]
+                NanoLootDB.CustomFontPath = lsmFontPaths[lsmFontNames[1]]
                 NanoLoot.UI.UpdateFontStrings()
             end
-        })
-    end
-    customFontDropdown:SetMenu(options)
-
-    if NanoLootDB.UseCustomFont then
-        customFontDropdown:Show()
-
-        if not NanoLootDB.CustomFontName then
-            NanoLootDB.CustomFontName = lsmFontNames[1]
-            NanoLootDB.CustomFontPath = lsmFontPaths[lsmFontNames[1]]
-            NanoLoot.UI.UpdateFontStrings()
+        else
+            customFontDropdown:Hide()
         end
-    else
-        customFontDropdown:Hide()
-    end
+    end)
 
     -- Font size slider
     local function OnValueChanged(_, value)
