@@ -11,7 +11,8 @@ Elements.Panel.CreatePanel = function(
   point,
   relativePoint,
   opacity,
-  invisible
+  invisible,
+  onDragStop
 )
   offsetX = offsetX or 0
   offsetY = offsetY or 0
@@ -65,7 +66,12 @@ Elements.Panel.CreatePanel = function(
     panelBase:SetMovable(true)
     panelBase:RegisterForDrag("LeftButton")
     panelBase:SetScript("OnDragStart", panelBase.StartMoving)
-    panelBase:SetScript("OnDragStop", panelBase.StopMovingOrSizing)
+
+    if onDragStop then
+      panelBase:SetScript("OnDragStop", onDragStop)
+    else
+      panelBase:SetScript("OnDragStop", panelBase.StopMovingOrSizing)
+    end
   end
 
   return panelBase

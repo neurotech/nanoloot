@@ -69,6 +69,10 @@ loadingEvents:SetScript(
                 NanoLootDB.CustomFontName = nil
                 NanoLootDB.CustomFontPath = nil
                 NanoLootDB.FontSize = 12
+                NanoLootDB.PanelPoint = "TOPLEFT"
+                NanoLootDB.PanelRelativePoint = "TOPLEFT"
+                NanoLootDB.PanelPositionX = 10
+                NanoLootDB.PanelPositionY = -10
             else
                 if not NanoLootDB.LootList then
                     NanoLootDB.LootList = {}
@@ -100,6 +104,22 @@ loadingEvents:SetScript(
 
                 if not NanoLootDB.HideWhenEmpty then
                     NanoLootDB.HideWhenEmpty = false
+                end
+
+                if not NanoLootDB.PanelPoint then
+                    NanoLootDB.PanelPoint = "TOPLEFT"
+                end
+
+                if not NanoLootDB.PanelRelativePoint then
+                    NanoLootDB.PanelRelativePoint = "TOPLEFT"
+                end
+
+                if not NanoLootDB.PanelPositionX then
+                    NanoLootDB.PanelPositionX = 10
+                end
+
+                if not NanoLootDB.PanelPositionY then
+                    NanoLootDB.PanelPositionY = -10
                 end
             end
 

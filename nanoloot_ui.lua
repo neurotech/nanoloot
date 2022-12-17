@@ -3,24 +3,20 @@ local function GetLootText(lootInfo)
     return lootText
 end
 
-local function GetMessageText(lootInfo, isSelf)
-    local messageText = ""
-
-    if isSelf then
-        messageText = "Does anyone need this? " .. lootInfo.link
-    else
-        messageText = "Hey, do you need that item you just looted? (" ..
-            lootInfo.link .. ") If not, could I please grab it?"
-    end
-
-    return messageText
-end
-
 local function GetPanelWidth()
     return NanoLootDB.FontSize * 24
 end
 
 local function CreateMainPanel()
+    local function onDragStop(self)
+        self:StopMovingOrSizing()
+        local point, _, relativePoint, offsetX, offsetY = self:GetPoint()
+        NanoLootDB.PanelPoint = point
+        NanoLootDB.PanelRelativePoint = relativePoint
+        NanoLootDB.PanelPositionX = offsetX
+        NanoLootDB.PanelPositionY = offsetY
+    end
+
     local NanoLootPanel = Elements.Panel.CreatePanel(
         UIParent,
         "NANOLOOT_PANEL_BASE",
@@ -34,8 +30,23 @@ local function CreateMainPanel()
         "TOPLEFT",
         "TOPLEFT",
         nil,
-        true
+        true,
+        onDragStop
     )
+    NanoLootPanel:SetScript("OnDragStop", onDragStop)
+
+    local panelPosition = NanoLootDB.PanelPoint and NanoLootDB.PanelRelativePoint and NanoLootDB.PanelPositionX and
+        NanoLootDB.PanelPositionY
+
+    if panelPosition then
+        NanoLootPanel:SetPoint(
+            NanoLootDB.PanelPoint,
+            UIParent,
+            NanoLootDB.PanelRelativePoint,
+            NanoLootDB.PanelPositionX,
+            NanoLootDB.PanelPositionY
+        )
+    end
 
     return NanoLootPanel
 end
