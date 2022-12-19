@@ -1,5 +1,11 @@
 local function NanoLootEventHandler(_, event, ...)
     if event == "CHAT_MSG_LOOT" then
+        local info = { ... }
+        local guid = info[12]
+        if not guid then
+            return
+        end
+
         local currentPlayer = UnitName("player")
         local player, classPlayer, link, rarity, itemLevel, itemID, itemType, itemSubType = NanoLoot.Utilities.LootInfo(...)
         local truncatedLink = NanoLoot.Utilities.GetTruncatedLink(link)
